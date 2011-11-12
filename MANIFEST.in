@@ -1,2 +1,2 @@
-include README Makefile mangler.py
+include README Makefile mangler.py COPYRIGHT
 recursive-include test *
