@@ -1,13 +1,16 @@
 """
-Provide an mselect filter type. This extends the filter syntax
-to allow a union of two or more select type filters in one
-filter step. This allows for union or multiple type selections.
-The following example will select those tiddlers which have tag
-blog OR tag published and then sort by modified time:
+This is a TiddlyWeb plugin which extends the TiddlyWeb filter syntax 
+to add 'oom' (One Of Many) which matches if the named attribute is any
+of those named in the provided list. It is similar to
+tiddlywebplugins.mselect but only matches the named attribute against
+many values, not many possible attributes.
 
-        mselect=tag:blog,tag:published;sort=-modified
+This will return all tiddlers with tag blog or published (or both) and
+then sort by modified:
 
-Install by adding 'tiddlywebplugins.mselect' to 'system_plugins'
+    oom=tag:blog,published;sort=-modified
+
+Install by adding 'tiddlywebplugins.oom' to 'system_plugins'
 in tiddlywebconfig.py.
 """
 
@@ -23,6 +26,9 @@ test_oom = None
 
 
 def init(config):
+    """
+    Install the filter.
+    """
 
     global test_oom
 
@@ -53,11 +59,13 @@ def init(config):
                     return False
 
         return ifilter(get_value_in_values, entities)
-        
+
     def oom_parse(command):
         attribute, args = command.split(':', 1)
+
         def selector(entities, indexable=False, environ=None):
             return select_if_one(attribute, args, entities, environ=environ)
+
         return selector
 
     FILTER_PARSERS['oom'] = oom_parse
