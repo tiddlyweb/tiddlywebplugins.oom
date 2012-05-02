@@ -17,7 +17,7 @@ in tiddlywebconfig.py.
 from itertools import ifilter
 
 from tiddlyweb.filters import FILTER_PARSERS
-from tiddlyweb.filters.select import _get_entity
+from tiddlyweb.store import get_entity
 
 
 OOM_SEPARATOR = ','
@@ -49,7 +49,7 @@ def init(config):
         values = value.split(separator)
 
         def get_value_in_values(entity):
-            entity = _get_entity(entity, store)
+            entity = get_entity(entity, store)
             try:
                 return getattr(entity, attribute) in values
             except AttributeError:
